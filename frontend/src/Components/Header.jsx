@@ -1,16 +1,8 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Dialog,
   DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Popover,
-  PopoverButton,
-  PopoverGroup,
-  PopoverPanel,
-  Transition,
   Switch,
 } from '@headlessui/react'
 import {
@@ -24,8 +16,15 @@ import {Link} from 'react-router-dom';
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  useEffect(() => {
+    if(isDarkMode) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [isDarkMode])
   return (
-    <header className="bg-white fixed top-0 w-full">
+    <header className="bg-white z-20 fixed top-0 w-full dark:bg-black shadow-[0_0_9px_0_#ababab]">
     <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
       <div className="flex lg:flex-1">
         <Link to="/" className="-m-1.5 p-1.5">
@@ -34,9 +33,9 @@ const Header = () => {
         </Link>
       </div>
       <div className='hidden lg:flex gap-x-12'>
-        <Link to="/" className="text-sm font-semibold leading-6 text-gray-900">Home</Link>
-        <Link to="/games" className="text-sm font-semibold leading-6 text-gray-900">Game</Link>
-        <Link to="/" className="text-sm font-semibold leading-6 text-gray-900">Home</Link>
+        <Link to="/" className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">Home</Link>
+        <Link to="/games" className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">Game</Link>
+        <Link to="/" className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">Home</Link>
       </div>
       <div className="flex lg:hidden">
         <button
@@ -52,7 +51,7 @@ const Header = () => {
       <Switch
       checked={isDarkMode}
       onChange={() => setIsDarkMode(!isDarkMode)}
-      className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-yellow-500 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-black data-[checked]:bg-black"
+      className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-yellow-500 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-black dark:border dark:border-while data-[checked]:bg-black"
     >
       <span
         aria-hidden="true"

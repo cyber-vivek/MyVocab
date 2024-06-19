@@ -1,31 +1,29 @@
 import React from 'react'
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import {
+  SpeakerWaveIcon
+} from '@heroicons/react/24/outline'
 
 const Homepage = () => {
   return (
-    <div className="h-screen w-full bg-black pt-32 px-4">
-      <div className="mx-auto w-full max-w-lg divide-y divide-white/5 rounded-xl bg-white/5">
-        <Disclosure as="div" className="p-6" defaultOpen={true}>
-          <DisclosureButton className="group flex w-full items-center justify-between">
-            <span className="text-sm/6 font-medium text-white group-data-[hover]:text-white/80">
-              What is your refund policy?
-            </span>
-            <ChevronDownIcon className="size-5 fill-white/60 group-data-[hover]:fill-white/50 group-data-[open]:rotate-180" />
-          </DisclosureButton>
-          <DisclosurePanel className="mt-2 text-sm/5 text-white/50">
-            If you're unhappy with your purchase, we'll refund you in full.
-          </DisclosurePanel>
-        </Disclosure>
-        <Disclosure as="div" className="p-6">
-          <DisclosureButton className="group flex w-full items-center justify-between">
-            <span className="text-sm/6 font-medium text-white group-data-[hover]:text-white/80">
-              Do you offer technical support?
-            </span>
-            <ChevronDownIcon className="size-5 fill-white/60 group-data-[hover]:fill-white/50 group-data-[open]:rotate-180" />
-          </DisclosureButton>
-          <DisclosurePanel className="mt-2 text-sm/5 text-white/50">No.</DisclosurePanel>
-        </Disclosure>
+    <div className='mt-[80px] min-h-screen dark:bg-black p-4 pt-[30px]'>
+      <div className='border border-gray-500 rounded-sm shadow-[0_0_5px_0_rgb(80,80,80)] p-[10px]'>
+        <div className='flex items-center gap-[20px]'>
+          <SpeakerWaveIcon className='text-black w-[30px] p-[5px] border border-gray-300 rounded-[50px] cursor-pointer'/>
+          <h2 className='text-xl flex-1'>Candid</h2>
+          <a className='text-[#5e78c6]' href="https://www.google.com/search?q=candid" target='_blank' rel='noreferrer'>Search on Google</a>
+        </div>
+        <div className='pt-[10px]'>
+          <p className='text-gray-500 text-[15px]'>nounn</p>
+          <div>
+            <p className='pl-[20px]'>meaning of the word</p>
+            <div className='ml-[20px] flex items-center gap-[10px]'>
+              <span className='text-sm text-gray-500'>Ex: </span>
+              <p className='p-[3px] px-[10px] border rounded-[50px] inline'>
+              example of the word
+              </p>
+              </div>
+          </div>
+        </div>
       </div>
     </div>
   )
