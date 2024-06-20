@@ -1,30 +1,23 @@
-import React from 'react'
-import {
-  SpeakerWaveIcon
-} from '@heroicons/react/24/outline'
+import React from 'react';
+import WordCard from './WordCard';
+import { useState } from 'react';
+import {PlusCircleIcon} from '@heroicons/react/24/outline'
+import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import AddWord from './AddWord';
 
 const Homepage = () => {
+  const [isAddWordDiaglogOpen, setIsAddWordDiaglogOpen] = useState(false);
   return (
     <div className='mt-[80px] min-h-screen dark:bg-black p-4 pt-[30px]'>
-      <div className='border border-gray-500 rounded-sm shadow-[0_0_5px_0_rgb(80,80,80)] p-[10px]'>
-        <div className='flex items-center gap-[20px]'>
-          <SpeakerWaveIcon className='text-black w-[30px] p-[5px] border border-gray-300 rounded-[50px] cursor-pointer'/>
-          <h2 className='text-xl flex-1'>Candid</h2>
-          <a className='text-[#5e78c6]' href="https://www.google.com/search?q=candid" target='_blank' rel='noreferrer'>Search on Google</a>
+      <WordCard/>
+      <PlusCircleIcon className='text-[#033f63] fixed w-[50px] bottom-[20px] right-[20px] cursor-pointer' title='Add New Word' onClick={() => setIsAddWordDiaglogOpen(true)}/>
+      <Dialog open={isAddWordDiaglogOpen} onClose={() => setIsAddWordDiaglogOpen(false)} className="relative z-50">
+        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+          <DialogPanel className="max-w-lg space-y-4 border rounded-[4px] bg-white p-12 shadow-2xl">
+            <AddWord/>
+          </DialogPanel>
         </div>
-        <div className='pt-[10px]'>
-          <p className='text-gray-500 text-[15px]'>nounn</p>
-          <div>
-            <p className='pl-[20px]'>meaning of the word</p>
-            <div className='ml-[20px] flex items-center gap-[10px]'>
-              <span className='text-sm text-gray-500'>Ex: </span>
-              <p className='p-[3px] px-[10px] border rounded-[50px] inline'>
-              example of the word
-              </p>
-              </div>
-          </div>
-        </div>
-      </div>
+      </Dialog>
     </div>
   )
 }
