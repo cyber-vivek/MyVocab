@@ -1,9 +1,7 @@
 import axios from 'axios';
 import {toast} from 'react-toastify';
-import { host } from './APIRoutes';
-
 const axiosHttp = axios.create({
-    baseURL: host,
+    baseURL: process.env.REACT_APP_SERVER_URL,
 })
 
 axiosHttp.interceptors.request.use(
