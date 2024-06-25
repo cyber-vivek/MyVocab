@@ -1,0 +1,37 @@
+.wordMeaning {
+    padding-left: 10px;
+}
+
+.wordMeaningsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.wordDefinitions {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.example {
+    padding-left: 20px;
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    align-items: center;
+
+}
+
+.example span {
+    color: #333;
+    background-color: #f2f2f2;
+    padding: 3px 7px;
+    border: 1px solid gray;
+    border-radius: 50px;
+    margin-left: 5px;
+}
+
+.partOfSpeech {
+    font-weight: 550;
+}

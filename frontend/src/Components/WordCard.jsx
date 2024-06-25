@@ -1,31 +1,47 @@
 import React from 'react';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import styles from '../Styles/WordCard.module.css';
 
 
-const WordCard = ({data}) => {
+const WordCard = ({ data }) => {
   return (
     <Card>
-    <CardContent>
-      <Typography variant="h5" component="div">
-      {data.name}
-      </Typography>
-      <Typography sx={{ mb: 1.5 }} color="text.secondary">
-        adjective
-      </Typography>
-      <Typography variant="body2">
-        well meaning and kindly.
-        <br />
-        {'"a benevolent smile"'}
-      </Typography>
-    </CardContent>
-    <CardActions>
-      <Button size="small">Learn More</Button>
-    </CardActions>
-  </Card>
+      <CardContent>
+        <Typography variant="h4" component="div">
+          {data.name}
+        </Typography>
+        <div className={styles.wordMeaningsContainer}>
+        {
+          data?.meanings?.map(meaning => (
+            <div>
+              <Typography variant='subtitle2' className={styles.partOfSpeech}>
+                {meaning?.partOfSpeech}
+              </Typography>
+              <div className={styles.wordDefinitions}>
+                {
+                  meaning?.definitions?.map((definition, mi) => (
+                    <div>
+                      <Typography className={styles.wordMeaning} variant='body2'>
+                        {mi + 1}) {definition.definition}
+                      </Typography>
+                      {!!definition.example &&
+                        <Typography className={styles.example} variant='body2'>
+                          Ex:
+                          <span>{definition.example}</span>
+                        </Typography>
+                      }
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          ))
+        }
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 
