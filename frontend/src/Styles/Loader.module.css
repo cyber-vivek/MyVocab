@@ -1,0 +1,12 @@
+.loaderContainer {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}

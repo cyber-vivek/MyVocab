@@ -1,0 +1,14 @@
+.dialogContent {
+  padding: 10px !important;
+  width: 600px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.AddWordIcon {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+}

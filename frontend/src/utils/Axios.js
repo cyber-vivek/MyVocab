@@ -1,13 +1,21 @@
 import axios from 'axios';
-import {toast} from 'react-toastify';
-const axiosHttp = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_URL,
-})
+import { toast } from 'react-toastify';
+import {showLoader, hideLoader} from '../actions/loaderActions';
+import store from '../store'
+
+export const axiosHttp = axios.create({
+  baseURL: process.env.REACT_APP_SERVER_URL,
+});
+
+export const axiosHttpNL = axios.create({
+  baseURL: process.env.REACT_APP_SERVER_URL,
+});
 
 axiosHttp.interceptors.request.use(
   config => {
     const token = JSON.parse(localStorage.getItem('authToken'));
-    config.headers.Authorization = token; 
+    config.headers.Authorization = token;
+    store.dispatch(showLoader());
     return config;
   },
   error => {
@@ -16,16 +24,43 @@ axiosHttp.interceptors.request.use(
 );
 
 axiosHttp.interceptors.response.use(
-    (response) => {
-        return response;
-      },
-      (error) => {
-        if (error.response.status === 401) {
-          toast.error('Unauthorized Access!');
-          window.location.href = "/login";
-        }
-        return Promise.reject(error);
-      }
+  (response) => {
+    store.dispatch(hideLoader());
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      toast.error('Unauthorized Access!');
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+)
+
+
+axiosHttpNL.interceptors.request.use(
+  config => {
+
+    const token = JSON.parse(localStorage.getItem('authToken'));
+    config.headers.Authorization = token;
+    return config;
+  },
+  error => {
+    Promise.reject(error)
+  }
+);
+
+axiosHttpNL.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      toast.error('Unauthorized Access!');
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
 )
 
 export default axiosHttp;

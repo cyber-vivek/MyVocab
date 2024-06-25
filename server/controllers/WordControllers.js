@@ -5,11 +5,14 @@ const addWord = async (req, res, next) => {
   const body = req.body;
   const name  = body.name;
   const userDefinition = body.definitions || [];
-  const apiResponse = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${name}`);
+  let apiResponse = {};
+  try {
+    apiResponse = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${name}`);
+  } catch (err) {}
   const apiData = apiResponse.data;
   let phonetics = {};
   let meanings = [];
-  let origin = apiData[0].origin || '';
+  let origin = apiData?.[0]?.origin || '';
   apiData?.forEach(word => {
     let wmeanings = word.meanings || [];
     wmeanings?.forEach(meaning => {
@@ -29,11 +32,13 @@ const addWord = async (req, res, next) => {
 }
 
 const getWords = async (req, res, next) => {
-  const {pageNo = 1, pageSize = 10} = req.query;
+  let {pageNo = 1, pageSize = 10} = req.query;
+  pageNo = +pageNo;
+  pageSize = +pageSize;
   if(pageNo < 1) {
     return res.status(400).json({message: 'Invalid Page Number'});
   }
-  const data = await Word.find({}).skip((pageNo -1)*pageSize).limit(pageSize).lean();
+  const data = await Word.find({}).sort({_id: -1}).skip((pageNo -1)*pageSize).limit(pageSize).lean();
   const totalRecords = await Word.countDocuments({});
   const paginationInfo = {
     pageNo,
