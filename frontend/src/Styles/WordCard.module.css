@@ -20,7 +20,19 @@
     color: #666;
     display: flex;
     align-items: center;
+}
 
+.synonyms {
+    font-size: 14px;
+    padding-left: 10px;
+    color: #666;
+    display: flex;
+    align-items: center;
+}
+
+.synonyms span {
+    color: #333;
+    margin-left: 5px;
 }
 
 .example span {
@@ -28,7 +40,7 @@
     background-color: #f2f2f2;
     padding: 3px 7px;
     border: 1px solid gray;
-    border-radius: 50px;
+    border-radius: 15px;
     margin-left: 5px;
 }
 

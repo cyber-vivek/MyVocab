@@ -13,7 +13,7 @@ const meaningSchema = mongoose.Schema({
 const MessageSchema = mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
-    userDefinition: [meaningSchema],
+    userMeanings: [meaningSchema],
     phonetics: {text: String, audio: String},
     origin: String,
     meanings: [meaningSchema],

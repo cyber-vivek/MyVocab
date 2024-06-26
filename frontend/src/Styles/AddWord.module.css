@@ -1,14 +1,64 @@
 .dialogContent {
-  padding: 10px !important;
-  width: 600px;
-  gap: 10px;
+  padding: 16px 24px !important;
+  padding-top: 10px !important;
+  width: min(70vw, 552px);
+  gap: 20px;
   display: flex;
   flex-direction: column;
   justify-content: start;
 }
 
 .AddWordIcon {
-  position: fixed;
-  bottom: 50px;
-  right: 50px;
+  position: fixed !important;
+  bottom: 5vh;
+  right: 3vw;
+  border: 1px solid #1976d238 !important;
+  background-color: #FFF !important;
+
+  @media (max-width: 1000px) {
+    right: 6vw;
+  }
+  @media (max-width: 500px) {
+    right: 10vw;
+  }
+}
+
+.AddWordMeaningContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.AddWordMeaning {
+  padding: 15px;
+  border: 1px solid rgb(189 189 189 / 87%);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+}
+
+.meaningExample {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 15px;
+}
+
+.addMoreDefinition {
+  display: flex;
+  justify-content: right;
+}
+
+.addMoreText {
+  color: #1565c0;
+  cursor: pointer;
+  font-size: 13px;
+  user-select: none;
+}
+
+.addWordDialogActions {
+  display: flex !important;
+  justify-content: center !important;
 }

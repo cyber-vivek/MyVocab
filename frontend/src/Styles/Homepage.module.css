@@ -1,9 +1,18 @@
 .cardContainer {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 }
+
 .scrollContainer {
-  height: 85vh;
   overflow-y: scroll;
+  height: calc(100vh - 80px);
+  overflow-y: scroll;
+  margin-top: 64px;
+}
+
+.emptyContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
 }

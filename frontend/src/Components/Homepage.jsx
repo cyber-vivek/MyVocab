@@ -4,7 +4,8 @@ import { WORDS_PAGE_SIZE } from "../constants";
 import WordCard from "./WordCard";
 import styles from "../Styles/Homepage.module.css";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Skeleton from '@mui/material/Skeleton';
+import Stack from "@mui/material/Stack";
+import Skeleton from "@mui/material/Skeleton";
 import AddWord from "./AddWord";
 
 const Homepage = () => {
@@ -12,7 +13,7 @@ const Homepage = () => {
   const [words, setWords] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   useEffect(() => {
-    if(!currPage) {
+    if (!currPage) {
       fetchWords(true);
     }
   }, [currPage]);
@@ -29,48 +30,55 @@ const Homepage = () => {
   };
 
   const onAddWordClick = (wordData) => {
-    addWord({name: wordData}).then((res) => {
+    addWord(wordData).then((res) => {
       setcurrPage(0);
       setWords([]);
       setTotalRecords(0);
-    })
-  }
+    });
+  };
 
   return (
     <>
-    <div className={styles.scrollContainer} id="infiniteScrollCont">
-      <InfiniteScroll
-        dataLength={words.length}
-        next={fetchWords}
-        hasMore={currPage * WORDS_PAGE_SIZE < totalRecords}
-        loader={
-          <div>
-            <Skeleton/>
-            <Skeleton/>
-            <Skeleton/>
+      <div className={styles.scrollContainer} id="infiniteScrollCont">
+        {words.length ? (
+          <InfiniteScroll
+            dataLength={words.length}
+            next={fetchWords}
+            hasMore={currPage * WORDS_PAGE_SIZE < totalRecords}
+            loader={
+              <Stack spacing={1} paddingTop={"20px"}>
+                <Skeleton variant="rectangular" height={60} />
+                <Skeleton variant="rectangular" height={60} />
+                <Skeleton variant="rectangular" height={60} />
+              </Stack>
+            }
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+            style={{
+              padding: "10px",
+            }}
+            scrollableTarget="infiniteScrollCont"
+            scrollThreshold={"200px"}
+          >
+            <div className={styles.cardContainer}>
+              {words.map((word) => (
+                <WordCard data={word} />
+              ))}
+            </div>
+          </InfiniteScroll>
+        ) : (
+          <div className={styles.emptyContainer}>
+            <div>
+              <h1>Nothing Found !</h1>
+              <p>Add some words By Clicking + icon</p>
+            </div>
           </div>
-        }
-        endMessage={
-          <p style={{ textAlign: "center" }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
-        style={{
-          padding: "10px"
-        }}
-        scrollableTarget = "infiniteScrollCont"
-        scrollThreshold={"200px"}
-      >
-        <div className={styles.cardContainer}>
-          {words.length ? (
-            words.map((word) => <WordCard data={word} />)
-          ) : (
-            <div>No Words Added yet</div>
-          )}
-        </div>
-      </InfiniteScroll>
-      <AddWord onAddWordClick={onAddWordClick}/>
-    </div>
+        )}
+        <AddWord onAddWordClick={onAddWordClick} />
+      </div>
     </>
   );
 };

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import {showLoader, hideLoader} from '../actions/loaderActions';
 import store from '../store'
+import { SOME_ERROR_OCCURED } from '../constants';
 
 export const axiosHttp = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
@@ -33,6 +34,8 @@ axiosHttp.interceptors.response.use(
       toast.error('Unauthorized Access!');
       window.location.href = "/login";
     }
+    toast.error(error?.response?.data?.error?._message || SOME_ERROR_OCCURED);
+    store.dispatch(hideLoader());
     return Promise.reject(error);
   }
 )
@@ -59,6 +62,7 @@ axiosHttpNL.interceptors.response.use(
       toast.error('Unauthorized Access!');
       window.location.href = "/login";
     }
+    toast.error(error?.response?.data?.error?._message || SOME_ERROR_OCCURED);
     return Promise.reject(error);
   }
 )

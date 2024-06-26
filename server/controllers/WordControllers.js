@@ -4,7 +4,7 @@ const axios = require('axios');
 const addWord = async (req, res, next) => {
   const body = req.body;
   const name  = body.name;
-  const userDefinition = body.definitions || [];
+  const userMeanings = body.meanings || [];
   let apiResponse = {};
   try {
     apiResponse = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${name}`);
@@ -23,7 +23,7 @@ const addWord = async (req, res, next) => {
       phonetics = {text: word.phonetics[0].text, audio: word.phonetics[0].audio};
     }
   });
-  const word = new Word({name, userDefinition, phonetics, origin, meanings});
+  const word = new Word({name, userMeanings, phonetics, origin, meanings});
   word.save().then(() => {
     return res.json({message: 'Word Added Successfully!', data: word});
   }).catch(err => {
