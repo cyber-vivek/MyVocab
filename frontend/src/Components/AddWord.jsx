@@ -105,9 +105,8 @@ const AddWord = ({ onAddWordClick }) => {
                 ))}
                 <div
                   className={styles.addMoreDefinition}
-                  onClick={(event) => handleAddMoreDefinition(meaningIndex, event)}
                 >
-                  <span className={styles.addMoreText}>Add More Definition</span>
+                  <span className={styles.addMoreText} onClick={(event) => handleAddMoreDefinition(meaningIndex, event)}>Add More Definition</span>
                 </div>
               </div>
             ))}

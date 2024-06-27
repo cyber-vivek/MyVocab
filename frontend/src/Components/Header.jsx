@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
@@ -9,18 +10,37 @@ import Divider from '@mui/material/Divider';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
+import Avatar from '@mui/material/Avatar';
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
+import { Menu, MenuItem } from '@mui/material';
+import styles from '../Styles/Header.module.css';
 
 const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Contact'];
+const navItems = [
+  {
+    name: "Home",
+    url: ''
+  },
+  {
+    name: 'About',
+    url: 'about'
+  }
+];
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  }
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  }
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
@@ -29,9 +49,11 @@ const Header = () => {
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+          <ListItem key={item.name} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
+              <Link to={`/${item.url}`} className={styles.linkStyle}>
+                <ListItemText primary={item.name} />
+              </Link>
             </ListItemButton>
           </ListItem>
         ))}
@@ -56,15 +78,22 @@ const Header = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            MY VOCAB
+            <Link to="/" className={styles.linkStyle}>My Vocab</Link>
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: '#fff' }}>
-                {item}
+              <Button key={item.name} sx={{ color: '#fff' }}>
+                <Link to={`/${item.url}`} className={styles.linkStyle}>
+                  {item.name}
+                </Link>
               </Button>
             ))}
           </Box>
+          <Typography component="div" sx={{ flexGrow: { xs: 1, sm: 0 }, display: 'flex', justifyContent: 'right' }}>
+            <IconButton sx={{ p: 0 }} onClick={handleOpenUserMenu}>
+              <Avatar alt="test" src="test" />
+            </IconButton>
+          </Typography>
         </Toolbar>
       </AppBar>
       <nav>
@@ -83,6 +112,26 @@ const Header = () => {
           {drawer}
         </Drawer>
       </nav>
+      <Menu
+        sx={{ mt: '45px' }}
+        id="menu-appbar"
+        anchorEl={anchorElUser}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={Boolean(anchorElUser)}
+        onClose={handleCloseUserMenu}
+      >
+        <MenuItem >
+          <Typography textAlign="center">Logout</Typography>
+        </MenuItem>
+      </Menu>
     </Box>
   )
 }
