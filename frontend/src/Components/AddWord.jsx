@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
 import { IconButton } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
+import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import {
   INITIAL_ADD_WORD_FORM_DATA,
   INITIAL_DEFINITION,
@@ -108,6 +109,7 @@ const AddWord = ({ onAddWordClick }) => {
                 >
                   <span className={styles.addMoreText} onClick={(event) => handleAddMoreDefinition(meaningIndex, event)}>Add More Definition</span>
                 </div>
+                {meaningIndex && <CancelTwoToneIcon fontSize="small" className={styles.crossIcon}/>}
               </div>
             ))}
             <div><span onClick={handleAddMoreMeaningClick} className={styles.addMoreText}>Add More Meanings</span></div>
