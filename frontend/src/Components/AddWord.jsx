@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
 import { IconButton } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
-import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
+import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
 import {
   INITIAL_ADD_WORD_FORM_DATA,
   INITIAL_DEFINITION,
@@ -19,38 +19,69 @@ import {
 
 const AddWord = ({ onAddWordClick }) => {
   const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState(JSON.parse(JSON.stringify(INITIAL_ADD_WORD_FORM_DATA)));
+  const [formData, setFormData] = useState(
+    JSON.parse(JSON.stringify(INITIAL_ADD_WORD_FORM_DATA))
+  );
   const dialogContentRef = useRef(null);
   const handleAddWordClick = () => {
+    let currFormData = formData;
+    currFormData.meanings = currFormData?.meanings?.filter((meaning) => {
+      meaning.definitions = meaning?.definitions?.filter((def) => {
+        return def.definition?.length;
+      });
+      if (meaning?.partOfSpeech?.length && meaning?.definitions?.length)
+        return true;
+      return false;
+    });
     onAddWordClick(formData);
     setOpen(false);
     setFormData(JSON.parse(JSON.stringify(INITIAL_ADD_WORD_FORM_DATA)));
   };
   const handleAddMoreDefinition = (meaningIndex) => {
     const meanings = formData.meanings;
-    meanings[meaningIndex]?.definitions?.push(JSON.parse(JSON.stringify(INITIAL_DEFINITION)));
+    meanings[meaningIndex]?.definitions?.push(
+      JSON.parse(JSON.stringify(INITIAL_DEFINITION))
+    );
     setFormData({ ...formData, meanings });
   };
   const handleAddMoreMeaningClick = () => {
     const meanings = formData.meanings;
     meanings.push(JSON.parse(JSON.stringify(INITIAL_MEANING_DATA)));
-    setFormData({...formData, meanings });
-  }
+    setFormData({ ...formData, meanings });
+  };
 
-  const handlePartOfSpeechChange = (meaningIndex, event, value = 0 ) => {
+  const handlePartOfSpeechChange = (meaningIndex, event, value = 0) => {
     console.log(value);
     const meanings = formData.meanings;
     meanings[meaningIndex].partOfSpeech = value || event.target.value;
-    setFormData({...formData, meanings });
-  }
+    setFormData({ ...formData, meanings });
+  };
 
-  const handleDefinitionAndExampleChange = (event, meaningIndex, defIndex, type) => {
+  const handleDefinitionAndExampleChange = (
+    event,
+    meaningIndex,
+    defIndex,
+    type
+  ) => {
     const meanings = formData.meanings;
-    if(type) {
+    if (type) {
       meanings[meaningIndex].definitions[defIndex].example = event.target.value;
     } else {
-      meanings[meaningIndex].definitions[defIndex].definition = event.target.value;
+      meanings[meaningIndex].definitions[defIndex].definition =
+        event.target.value;
     }
+    setFormData({ ...formData, meanings });
+  };
+
+  const handleMeaningDelete = (meaningIndex) => {
+    const meanings = formData.meanings;
+    meanings.splice(meaningIndex, 1);
+    setFormData({ ...formData, meanings });
+  };
+
+  const handleDefinitionDelete = (meaningIndex, defIndex) => {
+    const meanings = formData.meanings;
+    meanings[meaningIndex].definitions.splice(defIndex, 1);
     setFormData({...formData, meanings });
   }
 
@@ -92,27 +123,86 @@ const AddWord = ({ onAddWordClick }) => {
                     <TextField
                       {...params}
                       label={`Part Of Speech ${meaningIndex + 1}`}
-                      onChange={(event) => handlePartOfSpeechChange(meaningIndex, event)}
-                      />
-                      )}
+                      onChange={(event) =>
+                        handlePartOfSpeechChange(meaningIndex, event)
+                      }
+                    />
+                  )}
                   value={meaning.partOfSpeech}
-                  onChange={(event, value) => handlePartOfSpeechChange(meaningIndex, event, value)}
+                  onChange={(event, value) =>
+                    handlePartOfSpeechChange(meaningIndex, event, value)
+                  }
                 />
                 {meaning.definitions.map((definition, defIndex) => (
-                  <div className={styles.meaningExample}>
-                    <Input multiline placeholder={`Definition ${defIndex +1}`} onChange={(event) => handleDefinitionAndExampleChange(event, meaningIndex, defIndex, 0)} value={formData?.meanings?.[meaningIndex]?.definition?.[defIndex]?.definition}/>
-                    <Input multiline placeholder={`Example ${defIndex + 1} (Optional)`} onChange={(event) => handleDefinitionAndExampleChange(event, meaningIndex, defIndex, 1)} value={formData?.meanings?.[meaningIndex]?.definition?.[defIndex]?.example} />
+                  <div key={defIndex} className={styles.meaningExample}>
+                    <Input
+                      multiline
+                      placeholder={`Definition ${defIndex + 1}`}
+                      onChange={(event) =>
+                        handleDefinitionAndExampleChange(
+                          event,
+                          meaningIndex,
+                          defIndex,
+                          0
+                        )
+                      }
+                      value={
+                        formData?.meanings?.[meaningIndex]?.definitions?.[
+                          defIndex
+                        ]?.definition
+                      }
+                    />
+                    <Input
+                      multiline
+                      placeholder={`Example ${defIndex + 1} (Optional)`}
+                      onChange={(event) =>
+                        handleDefinitionAndExampleChange(
+                          event,
+                          meaningIndex,
+                          defIndex,
+                          1
+                        )
+                      }
+                      value={
+                        formData?.meanings?.[meaningIndex]?.definitions?.[
+                          defIndex
+                        ]?.example
+                      }
+                    />
+                    {!!defIndex && (
+                      <IconButton className={styles.crossIcon} onClick={() => handleDefinitionDelete(meaningIndex, defIndex)}>
+                        <CancelTwoToneIcon fontSize="small" />
+                      </IconButton>
+                    )}
                   </div>
                 ))}
-                <div
-                  className={styles.addMoreDefinition}
-                >
-                  <span className={styles.addMoreText} onClick={(event) => handleAddMoreDefinition(meaningIndex, event)}>Add More Definition</span>
+                <div className={styles.addMoreDefinition}>
+                  <span
+                    className={styles.addMoreText}
+                    onClick={(event) =>
+                      handleAddMoreDefinition(meaningIndex, event)
+                    }
+                  >
+                    Add More Definition
+                  </span>
                 </div>
-                {meaningIndex && <CancelTwoToneIcon fontSize="small" className={styles.crossIcon}/>}
+                {!!meaningIndex && (
+                  <IconButton className={styles.crossIcon} onClick={() => handleMeaningDelete(meaningIndex)}>
+                    <CancelTwoToneIcon
+                      fontSize="small"
+                    />
+                  </IconButton>
+                )}
               </div>
             ))}
-            <div><span onClick={handleAddMoreMeaningClick} className={styles.addMoreText}>Add More Meanings</span></div>
+            <div>
+              <span
+                onClick={handleAddMoreMeaningClick}
+                className={styles.addMoreText}
+              >
+                Add More Meanings
+              </span>
+            </div>
           </div>
         </DialogContent>
         <DialogActions className={styles.addWordDialogActions}>

@@ -10,7 +10,7 @@ const meaningSchema = mongoose.Schema({
     partOfSpeech: String,
 }, {_id: false})
 
-const MessageSchema = mongoose.Schema(
+const WordSchema = mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
     userMeanings: [meaningSchema],
@@ -23,4 +23,4 @@ const MessageSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-module.exports = mongoose.model("Message", MessageSchema);
+module.exports = mongoose.model("Word", WordSchema);

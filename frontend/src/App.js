@@ -7,6 +7,7 @@ import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from './Components/Loader';
 import { useSelector } from 'react-redux';
+import About from './Components/About';
 
 function App() {
   const loaderCount = useSelector((state) => state?.loader?.count);
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         {/* <Route path="/login" element={<Login/>} /> */}
         <Route path="/" element={<HeaderLayout><Homepage/></HeaderLayout>} />
+        <Route path="/about" element={<HeaderLayout><About/></HeaderLayout>} />
       </Routes>
     </Router>
     <ToastContainer/>
