@@ -11,3 +11,11 @@ export const getWords = (pageNo, pageSize, loader) => {
 export const addWord = (payload) => {
   return axiosHttp.post('/word/add-word', payload);
 }
+
+export const login = (payload) => {
+  return axiosHttp.post('/auth/login', payload);
+}
+
+export const register = (payload) => {
+  return axiosHttp.post('/auth/register', payload);
+}

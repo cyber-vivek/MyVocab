@@ -64,8 +64,8 @@ const Homepage = () => {
             scrollThreshold={"200px"}
           >
             <div className={styles.cardContainer}>
-              {words.map((word) => (
-                <WordCard data={word} />
+              {words.map((word, index) => (
+                <WordCard key={index} data={word} />
               ))}
             </div>
           </InfiniteScroll>

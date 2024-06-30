@@ -16,6 +16,8 @@ import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import { Menu, MenuItem } from '@mui/material';
 import styles from '../Styles/Header.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { userLogout } from '../actions/authActions';
 
 const drawerWidth = 240;
 const navItems = [
@@ -32,6 +34,8 @@ const navItems = [
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const userData = useSelector(state => state?.auth?.userData);
+  const dispatch = useDispatch();
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -91,7 +95,7 @@ const Header = () => {
           </Box>
           <Typography component="div" sx={{ flexGrow: { xs: 1, sm: 0 }, display: 'flex', justifyContent: 'right' }}>
             <IconButton sx={{ p: 0 }} onClick={handleOpenUserMenu}>
-              <Avatar alt="test" src="test" />
+              <Avatar alt={(userData?.name?.[0] || '').toUpperCase()} src="test" />
             </IconButton>
           </Typography>
         </Toolbar>
@@ -128,7 +132,7 @@ const Header = () => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        <MenuItem >
+        <MenuItem onClick={() => dispatch(userLogout())}>
           <Typography textAlign="center">Logout</Typography>
         </MenuItem>
       </Menu>

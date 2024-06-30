@@ -24,31 +24,31 @@ const WordCard = ({ data }) => {
         <Typography variant="h5" component="div">
           {data?.phonetics?.audio &&
             <IconButton aria-label="Search on Google" size="large" color='primary' onClick={handleAudioPlay}>
-              {isAudioPlaying ? 
-              <VolumeUpIcon/>
-              : <VolumeDownIcon/>
+              {isAudioPlaying ?
+                <VolumeUpIcon />
+                : <VolumeDownIcon />
               }
               <audio ref={audioRef} src={data?.phonetics?.audio} onEnded={() => setIsAudioPlaying(false)}></audio>
             </IconButton>
           }
           {data.name}
           <a href={`https://www.google.com/search?q=${data.name}`} target='_blank' rel='noreferrer'>
-          <IconButton aria-label="Search on Google" size="large" color='primary'>
-            <GoogleIcon />
-          </IconButton>
+            <IconButton aria-label="Search on Google" size="large" color='primary'>
+              <GoogleIcon />
+            </IconButton>
           </a>
         </Typography>
         <div className={styles.wordMeaningsContainer}>
-          {data?.meanings?.map((meaning) => (
-            <div>
+          {data?.meanings?.map((meaning, meaningIndex) => (
+            <div key={meaningIndex}>
               <Typography variant="subtitle2" className={styles.partOfSpeech}>
                 {meaning?.partOfSpeech}
               </Typography>
               <div className={styles.wordDefinitions}>
-                {meaning?.definitions?.map((definition, mi) => (
-                  <div>
+                {meaning?.definitions?.map((definition, di) => (
+                  <div key={di}>
                     <Typography className={styles.wordMeaning} variant="body2">
-                      {mi + 1}) {definition.definition}
+                      {di + 1}) {definition.definition}
                     </Typography>
                     {!!definition.example && (
                       <Typography className={styles.example} variant="body2">

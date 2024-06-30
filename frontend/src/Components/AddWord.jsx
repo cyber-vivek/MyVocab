@@ -51,7 +51,6 @@ const AddWord = ({ onAddWordClick }) => {
   };
 
   const handlePartOfSpeechChange = (meaningIndex, event, value = 0) => {
-    console.log(value);
     const meanings = formData.meanings;
     meanings[meaningIndex].partOfSpeech = value || event.target.value;
     setFormData({ ...formData, meanings });
@@ -82,7 +81,7 @@ const AddWord = ({ onAddWordClick }) => {
   const handleDefinitionDelete = (meaningIndex, defIndex) => {
     const meanings = formData.meanings;
     meanings[meaningIndex].definitions.splice(defIndex, 1);
-    setFormData({...formData, meanings });
+    setFormData({ ...formData, meanings });
   }
 
   // useEffect(() => {
@@ -114,7 +113,7 @@ const AddWord = ({ onAddWordClick }) => {
           />
           <div className={styles.AddWordMeaningContainer}>
             {formData.meanings.map((meaning, meaningIndex) => (
-              <div className={styles.AddWordMeaning}>
+              <div key={meaningIndex} className={styles.AddWordMeaning}>
                 <Autocomplete
                   id="part-of-speech-dropdown"
                   freeSolo
@@ -146,11 +145,7 @@ const AddWord = ({ onAddWordClick }) => {
                           0
                         )
                       }
-                      value={
-                        formData?.meanings?.[meaningIndex]?.definitions?.[
-                          defIndex
-                        ]?.definition
-                      }
+                      value={definition?.definition}
                     />
                     <Input
                       multiline
@@ -163,11 +158,7 @@ const AddWord = ({ onAddWordClick }) => {
                           1
                         )
                       }
-                      value={
-                        formData?.meanings?.[meaningIndex]?.definitions?.[
-                          defIndex
-                        ]?.example
-                      }
+                      value={definition?.example}
                     />
                     {!!defIndex && (
                       <IconButton className={styles.crossIcon} onClick={() => handleDefinitionDelete(meaningIndex, defIndex)}>

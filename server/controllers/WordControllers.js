@@ -22,11 +22,10 @@ const addWord = async (req, res, next) => {
     let apiPhonetics = word?.phonetics || [];
     if (!phonetics?.audio?.length) {
       apiPhonetics = apiPhonetics.filter(phone => phone?.audio?.length);
-      console.log(apiPhonetics);
       phonetics = { text: apiPhonetics[0]?.text, audio: apiPhonetics[0]?.audio };
     }
   });
-  const word = new Word({ name, userMeanings, phonetics, origin, meanings });
+  const word = new Word({ name, userMeanings, phonetics, origin, meanings, user: req.user.id });
   word.save().then(() => {
     return res.json({ message: 'Word Added Successfully!', data: word });
   }).catch(err => {
@@ -42,8 +41,8 @@ const getWords = async (req, res, next) => {
     return res.status(400).json({ message: 'Invalid Page Number' });
   }
   const [data, totalRecords] = await Promise.all([
-    Word.find({}).sort({ _id: -1 }).skip((pageNo - 1) * pageSize).limit(pageSize).lean(),
-    Word.countDocuments({}),
+    Word.find({user: req.user.id}).sort({ _id: -1 }).skip((pageNo - 1) * pageSize).limit(pageSize).lean(),
+    Word.countDocuments({user: req.user.id}),
   ]);
   const paginationInfo = {
     pageNo,

@@ -14,7 +14,7 @@ export const axiosHttpNL = axios.create({
 
 axiosHttp.interceptors.request.use(
   config => {
-    const token = JSON.parse(localStorage.getItem('authToken'));
+    const token = localStorage.getItem('authToken');
     config.headers.Authorization = token;
     store.dispatch(showLoader());
     return config;
@@ -30,11 +30,12 @@ axiosHttp.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
       toast.error('Unauthorized Access!');
       window.location.href = "/login";
+      return;
     }
-    toast.error(error?.response?.data?.error?._message || SOME_ERROR_OCCURED);
+    toast.error(error?.response?.data?.error?._message || error?.response?.data?.message || SOME_ERROR_OCCURED);
     store.dispatch(hideLoader());
     return Promise.reject(error);
   }
@@ -43,8 +44,7 @@ axiosHttp.interceptors.response.use(
 
 axiosHttpNL.interceptors.request.use(
   config => {
-
-    const token = JSON.parse(localStorage.getItem('authToken'));
+    const token = localStorage.getItem('authToken');
     config.headers.Authorization = token;
     return config;
   },
@@ -58,11 +58,12 @@ axiosHttpNL.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
       toast.error('Unauthorized Access!');
       window.location.href = "/login";
+      return;
     }
-    toast.error(error?.response?.data?.error?._message || SOME_ERROR_OCCURED);
+    toast.error(error?.response?.data?.error?._message || error?.response?.data?.message || SOME_ERROR_OCCURED);
     return Promise.reject(error);
   }
 )
