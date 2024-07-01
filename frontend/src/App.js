@@ -10,13 +10,14 @@ import { useSelector } from 'react-redux';
 import About from './Components/About';
 import SignUp from './Components/SignUp';
 import PrivateRoute from './Components/PrivateRoute';
+import { Grid } from '@mui/material';
 
 function App() {
   const loaderCount = useSelector((state) => state?.loader?.count);
   const getPrivateRoute = (Component) => {
     return <PrivateRoute><Component /></PrivateRoute>
   }
-  return (<>
+  return (<Grid component="div"  style={{pointerEvents: (loaderCount ? 'none' : 'all') }}>
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -27,7 +28,7 @@ function App() {
     </Router>
     <ToastContainer />
     {!!loaderCount && <Loader />}
-  </>
+  </Grid>
   );
 }
 
