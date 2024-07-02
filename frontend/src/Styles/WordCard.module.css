@@ -8,6 +8,17 @@
     gap: 10px;
 }
 
+.meaningBox {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.userMeaning {
+    border-right: 1px solid #bdbdbd;
+    padding-right: 5px;
+}
+
 .wordDefinitions {
     display: flex;
     flex-direction: column;

@@ -18,6 +18,46 @@ const WordCard = ({ data }) => {
       setIsAudioPlaying(true);
     }
   }
+  const renderMeanings = (meanings, userMeaning = false) => {
+    return (
+      <div className={`${styles.meaningBox} ${userMeaning ? styles.userMeaning : ''}`}>
+        {meanings?.map((meaning, meaningIndex) => (
+          <div key={meaningIndex}>
+            <Typography variant="subtitle2" className={styles.partOfSpeech}>
+              {meaning?.partOfSpeech}
+            </Typography>
+            <div className={styles.wordDefinitions}>
+              {meaning?.definitions?.map((definition, di) => (
+                <div key={di}>
+                  <Typography className={styles.wordMeaning} variant="body2">
+                    {di + 1}) {definition.definition}
+                  </Typography>
+                  {!!definition.example && (
+                    <Typography className={styles.example} variant="body2">
+                      Ex:
+                      <span>{definition.example}</span>
+                    </Typography>
+                  )}
+                </div>
+              ))}
+              {!!meaning?.synonyms?.length && (
+                <Typography className={styles.synonyms} variant="body2">
+                  Synonyms:
+                  <span>{meaning.synonyms.join(', ')}</span>
+                </Typography>
+              )}
+              {!!meaning?.antonyms?.length && (
+                <Typography className={styles.synonyms} variant="body2">
+                  Antonyms:
+                  <span >{meaning.antonyms.join(', ')}</span>
+                </Typography>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
   return (
     <Card>
       <CardContent>
@@ -39,40 +79,8 @@ const WordCard = ({ data }) => {
           </a>
         </Typography>
         <div className={styles.wordMeaningsContainer}>
-          {data?.meanings?.map((meaning, meaningIndex) => (
-            <div key={meaningIndex}>
-              <Typography variant="subtitle2" className={styles.partOfSpeech}>
-                {meaning?.partOfSpeech}
-              </Typography>
-              <div className={styles.wordDefinitions}>
-                {meaning?.definitions?.map((definition, di) => (
-                  <div key={di}>
-                    <Typography className={styles.wordMeaning} variant="body2">
-                      {di + 1}) {definition.definition}
-                    </Typography>
-                    {!!definition.example && (
-                      <Typography className={styles.example} variant="body2">
-                        Ex:
-                        <span>{definition.example}</span>
-                      </Typography>
-                    )}
-                  </div>
-                ))}
-                {!!meaning?.synonyms?.length && (
-                  <Typography className={styles.synonyms} variant="body2">
-                    Synonyms:
-                    <span>{meaning.synonyms.join(', ')}</span>
-                  </Typography>
-                )}
-                {!!meaning?.antonyms?.length && (
-                  <Typography className={styles.synonyms} variant="body2">
-                    Antonyms:
-                    <span >{meaning.antonyms.join(', ')}</span>
-                  </Typography>
-                )}
-              </div>
-            </div>
-          ))}
+          {renderMeanings(data?.userMeanings, true)}
+          {!!data?.meanings?.length && renderMeanings(data?.meanings)}
         </div>
       </CardContent>
     </Card>
