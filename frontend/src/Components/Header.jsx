@@ -28,6 +28,10 @@ const navItems = [
   {
     name: 'About',
     url: 'about'
+  },
+  {
+    name: 'Revision',
+    url: 'revision'
   }
 ];
 

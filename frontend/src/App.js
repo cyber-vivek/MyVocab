@@ -11,6 +11,7 @@ import About from './Components/About';
 import SignUp from './Components/SignUp';
 import PrivateRoute from './Components/PrivateRoute';
 import { Grid } from '@mui/material';
+import Revision from './Components/Revision';
 
 function App() {
   const loaderCount = useSelector((state) => state?.loader?.count);
@@ -24,6 +25,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/" element={<HeaderLayout>{getPrivateRoute(Homepage)}</HeaderLayout>} />
         <Route path="/about" element={<HeaderLayout>{getPrivateRoute(About)}</HeaderLayout>} />
+        <Route path="/revision" element={<HeaderLayout>{getPrivateRoute(Revision)}</HeaderLayout>} />
       </Routes>
     </Router>
     <ToastContainer />
