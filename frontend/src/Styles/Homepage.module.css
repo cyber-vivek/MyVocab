@@ -16,3 +16,18 @@
   justify-content: center;
   margin-top: 50px;
 }
+
+.AddWordIcon {
+  position: fixed !important;
+  bottom: 5vh;
+  right: 3vw;
+  border: 1px solid #1976d238 !important;
+  background-color: #FFF !important;
+
+  @media (max-width: 1000px) {
+    right: 6vw;
+  }
+  @media (max-width: 500px) {
+    right: 10vw;
+  }
+}
