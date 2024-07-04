@@ -23,7 +23,7 @@ const Homepage = () => {
   }, [currPage]);
 
   const fetchWords = (loader = false) => {
-    setIsLoading(true);
+    loader && setIsLoading(true);
     getWords(currPage + 1, WORDS_PAGE_SIZE, loader).then((res) => {
       res = res.data;
       const newWords = res.data || [];
