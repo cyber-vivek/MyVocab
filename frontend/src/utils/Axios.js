@@ -33,6 +33,7 @@ axiosHttp.interceptors.response.use(
     if (error?.response?.status === 401) {
       toast.error('Unauthorized Access!');
       window.location.href = "/login";
+      localStorage.clear();
       return;
     }
     toast.error(error?.response?.data?.error?._message || error?.response?.data?.message || SOME_ERROR_OCCURED);
@@ -61,6 +62,7 @@ axiosHttpNL.interceptors.response.use(
     if (error?.response?.status === 401) {
       toast.error('Unauthorized Access!');
       window.location.href = "/login";
+      localStorage.clear();
       return;
     }
     toast.error(error?.response?.data?.error?._message || error?.response?.data?.message || SOME_ERROR_OCCURED);

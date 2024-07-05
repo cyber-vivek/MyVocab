@@ -40,6 +40,8 @@ const Homepage = () => {
   const onAddWordClick = (wordData) => {
     addWord(wordData).then((res) => {
       setcurrPage(0);
+      setWords([]);
+      setIsLoading(true);
     });
   };
 
