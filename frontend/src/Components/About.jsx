@@ -3,7 +3,7 @@ import styles from '../Styles/About.module.css';
 
 const About = () => {
   return (
-    <div class={styles.container}>
+    <div className={styles.container}>
       <h1>About</h1>
       <p>
         This platform allows users to add words and explore their meanings.

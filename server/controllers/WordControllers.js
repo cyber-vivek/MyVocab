@@ -1,4 +1,6 @@
+const { errorHandler, successResponse } = require('../helpers/requestHandler');
 const Word = require('../models/wordModel');
+const { isValidObjectId } = require('mongoose');
 const axios = require('axios');
 
 const addWord = async (req, res, next) => {
@@ -41,8 +43,8 @@ const getWords = async (req, res, next) => {
     return res.status(400).json({ message: 'Invalid Page Number' });
   }
   const [data, totalRecords] = await Promise.all([
-    Word.find({user: req.user.id}).sort({ _id: -1 }).skip((pageNo - 1) * pageSize).limit(pageSize).lean(),
-    Word.countDocuments({user: req.user.id}),
+    Word.find({ user: req.user.id }).sort({ _id: -1 }).skip((pageNo - 1) * pageSize).limit(pageSize).lean(),
+    Word.countDocuments({ user: req.user.id }),
   ]);
   const paginationInfo = {
     pageNo,
@@ -52,7 +54,59 @@ const getWords = async (req, res, next) => {
   return res.json({ message: 'Words Fetched Successfully!', data, paginationInfo });
 }
 
+const updateWord = async (req, res, next) => {
+  try {
+    const { wordId = '', userMeanings = [] } = req.body;
+    if (!wordId) throw Error({ message: 'Unable to update' });
+    const word = await Word.findOneAndUpdate({ _id: wordId }, { userMeanings }, { new: true }).lean();
+    return successResponse(res, word, "Successfully Update the word");
+  } catch (err) {
+    const { status, message, error } = err.message;
+    return errorHandler(res, error, status, message);
+  }
+}
+
+const deleteWord = async (req, res, next) => {
+  try {
+    const { wordId } = req.body;
+    if (!isValidObjectId(wordId)) {
+      throw Error({ message: 'Invalid Word Id' });
+    }
+    await Word.findByIdAndDelete(wordId);
+    return successResponse(res, [], 'Successfully Deleted the Word');
+  } catch (err) {
+    const { status, message, error } = err.message;
+    return errorHandler(res, error, status, message);
+  }
+}
+
+const getRevisionWord = async (req, res, next) => {
+  try {
+    const word = await Word.find({ user: req.user.id }).sort({lastVisited: 1}).limit(1).lean();
+    return successResponse(res, word, 'Successfuly Retrived Least Revised Word');
+  } catch (err) {
+    const { status, message, error } = err.message;
+    return errorHandler(res, error, status, message);
+  }
+}
+
+const markRevision = async (req, res, next) => {
+  try{
+    const {wordId} = req.body;
+    const word = await Word.findOneAndUpdate({ _id: wordId }, { lastVisited: new Date() }).lean();
+    return successResponse(res, [], "Successfully marked Revision");
+  } catch(err) {
+
+  } 
+  const {wordId} = req.body;
+
+}
+
 module.exports = {
   addWord,
-  getWords
+  getWords,
+  updateWord,
+  deleteWord,
+  getRevisionWord,
+  markRevision,
 }

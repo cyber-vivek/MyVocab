@@ -19,3 +19,11 @@ export const login = (payload) => {
 export const register = (payload) => {
   return axiosHttp.post('/auth/register', payload);
 }
+
+export const getRevisionWord = () => {
+  return axiosHttpNL.get('/word/revision-words');
+}
+
+export const markRevision = (payload) => {
+  return axiosHttpNL.post('word/mark-revision', payload);
+}
