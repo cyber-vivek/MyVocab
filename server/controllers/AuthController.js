@@ -41,14 +41,11 @@ const registerUser = async (req, res, next) => {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({ name, email, password: hashedPassword });
-        newUser.save().then((data) => {
-            const authToken = createSecretToken(data._id);
-            const userData = data.toObject();
-            delete userData.password;
-            return res.json({ message: 'Account Created Successfully!', authToken, userData });
-        }).catch((error) => {
-            return res.status(400).json({ message: 'Some Error Occured', error });
-        })
+        const data = await  newUser.save();
+        const authToken = createSecretToken(data._id);
+        const userData = data.toObject();
+        delete userData.password;
+        return res.json({ message: 'Account Created Successfully!', authToken, userData })
     } catch (error) {
         return res.status(400).json({ message: 'Some Error Occured', error });
     }

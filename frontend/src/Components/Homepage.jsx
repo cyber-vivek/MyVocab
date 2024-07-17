@@ -53,12 +53,14 @@ const Homepage = () => {
             <InfiniteScroll
               dataLength={words.length}
               next={fetchWords}
-              hasMore={currPage * WORDS_PAGE_SIZE < totalRecords}
+              hasMore={true || currPage * WORDS_PAGE_SIZE < totalRecords}
               loader={
-                <Stack spacing={1} paddingTop={"20px"}>
-                  <Skeleton variant="rectangular" height={60} />
-                  <Skeleton variant="rectangular" height={60} />
-                  <Skeleton variant="rectangular" height={60} />
+                <Stack spacing={2} paddingTop={"20px"}>
+                  <Skeleton variant="rectangular" height={30} />
+                  <Skeleton variant="rectangular" height={30} />
+                  <Skeleton variant="rectangular" height={30} />
+                  <Skeleton variant="rectangular" height={30} />
+                  <Skeleton variant="rectangular" height={30} />
                 </Stack>
               }
               endMessage={
