@@ -1,3 +1,8 @@
+.cardContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .wordMeaning {
     padding-left: 10px;
 }

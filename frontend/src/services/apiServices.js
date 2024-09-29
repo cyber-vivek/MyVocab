@@ -27,3 +27,11 @@ export const getRevisionWord = () => {
 export const markRevision = (payload) => {
   return axiosHttpNL.post('word/mark-revision', payload);
 }
+
+export const deleteWord = (payload) => {
+  return axiosHttp.post('word/delete-word', payload);
+}
+
+export const updateWord = (payload) => {
+  return axiosHttp.post('word/update-word', payload);
+}

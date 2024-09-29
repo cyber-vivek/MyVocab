@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getWords, addWord } from "../services/apiServices";
+import { getWords, addWord, deleteWord, updateWord } from "../services/apiServices";
 import { WORDS_PAGE_SIZE } from "../constants";
 import WordCard from "./WordCard";
 import styles from "../Styles/Homepage.module.css";
@@ -15,6 +15,8 @@ const Homepage = () => {
   const [words, setWords] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [isAddWordOpen, setIsAddWordOpen] = useState(false);
+  const [wordUpdateInd, setWordUpdateInd] = useState(-1);
+  const [updateWordData, setUpdateWordData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (!currPage) {
@@ -38,22 +40,66 @@ const Homepage = () => {
   };
 
   const onAddWordClick = (wordData) => {
+    if(wordUpdateInd !== -1) {
+      const payload = {
+        wordId: words?.[wordUpdateInd],
+        userMeanings: wordData?.meanings,
+      };
+      updateWord(payload).then(res => {
+        const newWords = [...words]
+        newWords[wordUpdateInd] = res?.data?.data;
+        setWords(newWords);
+        handleWordModalClose();
+      })
+      return;
+    }
     addWord(wordData).then((res) => {
       setcurrPage(0);
       setWords([]);
       setIsLoading(true);
+      handleWordModalClose();
     });
   };
 
+  const handleWordModalClose = () => {
+    setIsAddWordOpen(false);
+    setWordUpdateInd(-1);
+    setUpdateWordData(null);
+  }
+
+  const handleDeleteWord = (index) => {
+    const payload = {
+      wordId: words?.[index]?._id
+    };
+    deleteWord(payload).then((res) => {
+      const updatedWords = [...words];
+      updatedWords.splice(index,1);
+      setWords(updatedWords);
+      setTotalRecords(totalRecords -1);
+    });
+  }
+
+  const onUpdateWord = (index) => {
+    const word = words?.[index];
+    const wordData = {
+      name: word?.name,
+      meanings: word?.userMeanings,
+    }
+    setWordUpdateInd(index);
+    setUpdateWordData(JSON.parse(JSON.stringify(wordData)));
+    setIsAddWordOpen(true);
+  }
+
   return (
     <>
+      {totalRecords && <div className={styles.totalWordInfo}>Total Words Added: {totalRecords}</div>}
       <div className={styles.scrollContainer} id="infiniteScrollCont">
         {!isLoading &&
           (words.length ? (
             <InfiniteScroll
               dataLength={words.length}
               next={fetchWords}
-              hasMore={true || currPage * WORDS_PAGE_SIZE < totalRecords}
+              hasMore={currPage * WORDS_PAGE_SIZE < totalRecords}
               loader={
                 <Stack spacing={2} paddingTop={"20px"}>
                   <Skeleton variant="rectangular" height={30} />
@@ -76,7 +122,7 @@ const Homepage = () => {
             >
               <div className={styles.cardContainer}>
                 {words.map((word, index) => (
-                  <WordCard key={word._id} data={word} />
+                  <WordCard key={word._id} data={word} index={index} onDeleteWord={handleDeleteWord} onUpdateWord={onUpdateWord}/>
                 ))}
               </div>
             </InfiniteScroll>
@@ -98,7 +144,7 @@ const Homepage = () => {
         >
           <AddCircleOutlineIcon fontSize="large" />
         </IconButton>
-        <AddWordDialog isOpen={isAddWordOpen} handleClose={() => setIsAddWordOpen(false)} onAddWordClick={onAddWordClick} />
+        <AddWordDialog isOpen={isAddWordOpen}  handleClose={handleWordModalClose} onAddWordClick={onAddWordClick} updateWordData={updateWordData}/>
       </div>
     </>
   );

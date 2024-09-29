@@ -1,3 +1,8 @@
+
+.totalWordInfo {
+  margin-top: 64px;
+  padding-left: 10px;
+}
 .cardContainer {
   display: flex;
   flex-direction: column;
@@ -8,7 +13,7 @@
   overflow-y: scroll;
   height: calc(100vh - 80px);
   overflow-y: scroll;
-  margin-top: 64px;
+  margin-top: 4px;
 }
 
 .emptyContainer {

@@ -17,10 +17,22 @@ import { IconButton } from "@mui/material";
 import styles from '../Styles/AddWordDialog.module.css';
 
 const AddWordDialog = (props) => {
-  const {handleClose, isOpen, onAddWordClick} = props;
+  const {handleClose, isOpen, onAddWordClick, updateWordData} = props;
   const [formData, setFormData] = useState(
     JSON.parse(JSON.stringify(INITIAL_ADD_WORD_FORM_DATA))
   );
+
+  useEffect(()=> {
+    if(updateWordData) {
+      const newFd = updateWordData;
+      if(!newFd?.meanings?.length) {
+        newFd.meanings = [JSON.parse(JSON.stringify(INITIAL_MEANING_DATA))];
+      }
+      setFormData(newFd);
+    } else {
+      setFormData(JSON.parse(JSON.stringify(INITIAL_ADD_WORD_FORM_DATA)));
+    }
+  },[updateWordData])
 
   const handleAddWordClick = () => {
     let currFormData = formData;
@@ -85,12 +97,13 @@ const AddWordDialog = (props) => {
 
   return (
     <Dialog onClose={handleClose} open={isOpen}>
-      <DialogTitle>Add New Word</DialogTitle>
+      <DialogTitle>{updateWordData ? 'Update' : 'Add New'} Word</DialogTitle>
       <DialogContent className={styles.dialogContent}>
         <TextField
           label="Enter Word"
           required={true}
           variant="outlined"
+          disabled={!!updateWordData}
           onChange={(event) =>
             setFormData({ ...formData, name: event.target.value })
           }
@@ -183,7 +196,7 @@ const AddWordDialog = (props) => {
       </DialogContent>
       <DialogActions className={styles.addWordDialogActions}>
         <Button variant="contained" onClick={handleAddWordClick}>
-          Add Word
+          {updateWordData ? 'Update' : 'Add'} Word
         </Button>
       </DialogActions>
     </Dialog>
