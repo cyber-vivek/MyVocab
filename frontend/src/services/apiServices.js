@@ -1,7 +1,7 @@
 import {axiosHttp, axiosHttpNL} from "../utils/Axios"
 
-export const getWords = (pageNo, pageSize, loader) => {
-  const url = `/word/getWords?pageNo=${pageNo}&pageSize=${pageSize}`
+export const getWords = (pageNo, pageSize, loader, query) => {
+  const url = `/word/getWords?pageNo=${pageNo}&pageSize=${pageSize}&query=${query}`
   if(loader) {
     return axiosHttp.get(url);
     }

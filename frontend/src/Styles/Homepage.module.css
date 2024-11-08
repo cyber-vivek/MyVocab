@@ -1,7 +1,8 @@
 
 .totalWordInfo {
-  margin-top: 64px;
+  margin-top: 66px;
   padding-left: 10px;
+  text-align: center;
 }
 .cardContainer {
   display: flex;
@@ -35,4 +36,13 @@
   @media (max-width: 500px) {
     right: 10vw;
   }
+}
+
+.searchBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.searchBar .wrapper {
+  width: 70%;
 }

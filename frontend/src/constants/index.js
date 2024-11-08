@@ -27,3 +27,5 @@ export const INITIAL_ADD_WORD_FORM_DATA = {
   name: '',
   meanings: [JSON.parse(JSON.stringify(INITIAL_MEANING_DATA))],
 }
+
+export const SEARCH_DEBOUNCE_TIME = 700;

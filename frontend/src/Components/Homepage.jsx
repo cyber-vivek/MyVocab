@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getWords, addWord, deleteWord, updateWord } from "../services/apiServices";
-import { WORDS_PAGE_SIZE } from "../constants";
+import { SEARCH_DEBOUNCE_TIME, WORDS_PAGE_SIZE } from "../constants";
 import WordCard from "./WordCard";
 import styles from "../Styles/Homepage.module.css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Stack from "@mui/material/Stack";
 import Skeleton from "@mui/material/Skeleton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { IconButton } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 import AddWordDialog from "./AddWordDialog";
 
 const Homepage = () => {
   const [currPage, setcurrPage] = useState(0);
   const [words, setWords] = useState([]);
+  const [searchText, setSearchText] = useState('');
   const [totalRecords, setTotalRecords] = useState(0);
   const [isAddWordOpen, setIsAddWordOpen] = useState(false);
   const [wordUpdateInd, setWordUpdateInd] = useState(-1);
   const [updateWordData, setUpdateWordData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const debounceTimerRef = useRef(null);
+  const isFirstTimeLoad = useRef(true);
   useEffect(() => {
     if (!currPage) {
       fetchWords(true);
@@ -26,7 +29,7 @@ const Homepage = () => {
 
   const fetchWords = (loader = false) => {
     loader && setIsLoading(true);
-    getWords(currPage + 1, WORDS_PAGE_SIZE, loader).then((res) => {
+    getWords(currPage + 1, WORDS_PAGE_SIZE, loader, searchText).then((res) => {
       res = res.data;
       const newWords = res.data || [];
       const paginationInfo = res?.paginationInfo;
@@ -90,9 +93,58 @@ const Homepage = () => {
     setIsAddWordOpen(true);
   }
 
+  const onSearchInputChange = (e) => {
+    setSearchText(e.target.value);
+  }
+
+  useEffect(() => {
+    if(isFirstTimeLoad.current) {
+      isFirstTimeLoad.current = false;
+      return;
+    }
+    debounce(() => () => {}, SEARCH_DEBOUNCE_TIME);
+  }, [searchText]);
+
+  const debounce = (callback, delay)  => {
+    if(debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    debounceTimerRef.current = setTimeout(() => {
+      setWords([]);
+      setcurrPage(0);
+      debounceTimerRef.current = null;
+    }, delay);
+  }
+
   return (
     <>
-      {totalRecords && <div className={styles.totalWordInfo}>Total Words Added: {totalRecords}</div>}
+      {totalRecords && <div className={styles.totalWordInfo}>{totalRecords} Words added so far!!</div>}
+      {totalRecords && <div className={styles.searchBar}>
+        <div className={styles.wrapper}>
+          <TextField
+            label='Search a Word'
+            placeholder={`Search among ${totalRecords} words`}
+            variant="standard"
+            value={searchText}
+            fullWidth
+            onChange={onSearchInputChange}
+            InputProps={{
+              sx: {
+                '&:before': {
+                  borderBottom: '2px solid #000',
+                },
+                '&:hover:not(.Mui-disabled):before': {
+                  borderBottom: '2px solid #000',
+                },
+                '&:after': {
+                  borderBottom: '2px solid #3f51b5',
+                },
+              },
+            }}
+          />
+        </div>
+      </div>
+      }
       <div className={styles.scrollContainer} id="infiniteScrollCont">
         {!isLoading &&
           (words.length ? (
@@ -126,7 +178,7 @@ const Homepage = () => {
                 ))}
               </div>
             </InfiniteScroll>
-          ) : (
+          ) : (searchText.length ? <div style={{textAlign: 'center'}}>No matching words Found</div> :
             <div className={styles.emptyContainer}>
               <div>
                 <h1>Nothing Found !</h1>

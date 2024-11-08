@@ -36,22 +36,28 @@ const addWord = async (req, res, next) => {
 }
 
 const getWords = async (req, res, next) => {
-  let { pageNo = 1, pageSize = 10 } = req.query;
-  pageNo = +pageNo;
-  pageSize = +pageSize;
-  if (pageNo < 1) {
-    return res.status(400).json({ message: 'Invalid Page Number' });
+  try {
+    let { pageNo = 1, pageSize = 10, query = '' } = req.query;
+    pageNo = +pageNo;
+    pageSize = +pageSize;
+    if (pageNo < 1) {
+      throw Error({ message: 'Invalid Word Id', status: 400 });
+    }
+    let reg = new RegExp(query);
+    const [data, totalRecords] = await Promise.all([
+      Word.find({ user: req.user.id, name: { $regex: reg, $options: 'i' } }).sort({ _id: -1 }).skip((pageNo - 1) * pageSize).limit(pageSize).lean(),
+      Word.countDocuments({ user: req.user.id }),
+    ]);
+    const paginationInfo = {
+      pageNo,
+      pageSize,
+      totalRecords,
+    }
+    return res.json({ message: 'Words Fetched Successfully!', data, paginationInfo });
+  } catch (err) {
+    const { status, message, error } = err.message;
+    return errorHandler(res, error, status, message);
   }
-  const [data, totalRecords] = await Promise.all([
-    Word.find({ user: req.user.id }).sort({ _id: -1 }).skip((pageNo - 1) * pageSize).limit(pageSize).lean(),
-    Word.countDocuments({ user: req.user.id }),
-  ]);
-  const paginationInfo = {
-    pageNo,
-    pageSize,
-    totalRecords,
-  }
-  return res.json({ message: 'Words Fetched Successfully!', data, paginationInfo });
 }
 
 const updateWord = async (req, res, next) => {
