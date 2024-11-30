@@ -8,7 +8,7 @@ const DAYS_OF_WEEK = [
   "Superb Saturday",
 ];
 
-const DAILY_WORD_CRON_TIME = '00 10 * * *';
+const DAILY_WORD_CRON_TIME = '00 8 * * *';
 
 module.exports = {
   DAYS_OF_WEEK,
