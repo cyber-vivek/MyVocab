@@ -1,7 +1,7 @@
 const wordModel = require('../models/wordModel');
 const { DAYS_OF_WEEK } = require('./constants');
 const { send_mail } = require('./emailsender');
-sendDailyEmailToEachUser = async () => {
+sendDailyEmailToEachUser = async (req, res, next) => {
   try {
     const users = await wordModel.aggregate([
       {
@@ -29,6 +29,7 @@ sendDailyEmailToEachUser = async () => {
       await send_mail(user.email, mailSubject, mailBody);
     }
   } catch (err) { }
+  if(res) return res.json({message: 'success'});
 }
 
 const getWordMeaning = (word) => {
