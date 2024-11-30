@@ -20,9 +20,10 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 })
 app.use('/auth', authRoutes);
 
+//for vercel deployment
+app.use('/cron', sendDailyEmailToEachUser);
+
 app.use(authenticateUser);
 app.use('/word', wordRoutes);
 
-//for vercel deployment
-app.use('/cron', sendDailyEmailToEachUser);
 cron.schedule(DAILY_WORD_CRON_TIME, sendDailyEmailToEachUser);
