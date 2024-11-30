@@ -23,4 +23,6 @@ app.use('/auth', authRoutes);
 app.use(authenticateUser);
 app.use('/word', wordRoutes);
 
+//for vercel deployment
+app.use('/cron', sendDailyEmailToEachUser);
 cron.schedule(DAILY_WORD_CRON_TIME, sendDailyEmailToEachUser);
