@@ -4,6 +4,9 @@ const cors = require('cors');
 const wordRoutes = require('./routes/wordRoutes');
 const authRoutes = require('./routes/AuthRoutes');
 const authenticateUser = require('./middlewares/authMiddleware');
+const cron = require('node-cron');
+const { sendDailyEmailToEachUser } = require('./utils/dailyWordEmailer');
+const { DAILY_WORD_CRON_TIME } = require('./utils/constants');
 const app = express();
 require('dotenv').config();
 app.use(express.json());
@@ -19,3 +22,5 @@ app.use('/auth', authRoutes);
 
 app.use(authenticateUser);
 app.use('/word', wordRoutes);
+
+cron.schedule(DAILY_WORD_CRON_TIME, sendDailyEmailToEachUser);
