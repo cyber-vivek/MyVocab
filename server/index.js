@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const wordRoutes = require('./routes/wordRoutes');
 const authRoutes = require('./routes/AuthRoutes');
+const testRoutes = require('./routes/testRoutes');
 const authenticateUser = require('./middlewares/authMiddleware');
 const cron = require('node-cron');
 const { sendDailyEmailToEachUser } = require('./utils/dailyWordEmailer');
@@ -25,5 +26,6 @@ app.use('/cron', sendDailyEmailToEachUser);
 
 app.use(authenticateUser);
 app.use('/word', wordRoutes);
+app.use('/test', testRoutes)
 
 cron.schedule(DAILY_WORD_CRON_TIME, sendDailyEmailToEachUser);

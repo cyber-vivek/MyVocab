@@ -35,3 +35,7 @@ export const deleteWord = (payload) => {
 export const updateWord = (payload) => {
   return axiosHttp.post('word/update-word', payload);
 }
+
+export const generateTest = (payload) => {
+  return axiosHttp.post('/test/generate', payload);
+}

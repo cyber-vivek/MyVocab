@@ -32,6 +32,10 @@ const navItems = [
   {
     name: 'Revision',
     url: 'revision'
+  },
+  {
+    name: 'Take Test',
+    url: 'test'
   }
 ];
 
