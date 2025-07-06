@@ -4,10 +4,11 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import styles from '../Styles/WordCard.module.css';
 import GoogleIcon from '@mui/icons-material/Google';
-import { IconButton, Popover } from '@mui/material';
+import { Button, IconButton, Popover } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeDownIcon from '@mui/icons-material/VolumeDown';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { pronounceWord } from '../utils/speechSynthesis';
 
 
 const WordCard = ({ data, index, onDeleteWord, onUpdateWord }) => {
@@ -89,9 +90,21 @@ const WordCard = ({ data, index, onDeleteWord, onUpdateWord }) => {
                 <GoogleIcon />
               </IconButton>
             </a>
+            <a href={`https://www.google.com/search?q=pronounce+${data.name}`} target='_blank' rel='noreferrer'>
+              <IconButton aria-label="Pronounce on Google" size="large" color='primary'>
+                <img
+                  src="/assets/google_pronounce.png"
+                  alt="Google Icon"
+                  style={{ width: 24, height: 24 }}
+                />
+              </IconButton>
+            </a>
+            <IconButton aria-label="Pronounce Word" size="large" color='primary' onClick={() => pronounceWord(data.name)}>
+              <VolumeUpIcon />
+            </IconButton>
           </div>
           <IconButton onClick={handleMoreActionClick}>
-            <MoreVertIcon style={{cursor: 'pointer'}} />
+            <MoreVertIcon style={{ cursor: 'pointer' }} />
           </IconButton>
         </Typography>
         <div className={styles.wordMeaningsContainer}>
@@ -110,8 +123,8 @@ const WordCard = ({ data, index, onDeleteWord, onUpdateWord }) => {
         }}
         onClick={handleClose}
       >
-        <div onClick={() => onUpdateWord(index)}><Typography sx={{ p: 2 }} style={{cursor: 'pointer'}}>Edit Meaning</Typography></div>
-        <div onClick={() => onDeleteWord(index)}><Typography sx={{ p: 2 }} style={{cursor: 'pointer'}}>Delete Word</Typography></div>
+        <div onClick={() => onUpdateWord(index)}><Typography sx={{ p: 2 }} style={{ cursor: 'pointer' }}>Edit Meaning</Typography></div>
+        <div onClick={() => onDeleteWord(index)}><Typography sx={{ p: 2 }} style={{ cursor: 'pointer' }}>Delete Word</Typography></div>
       </Popover>
     </Card>
   );
