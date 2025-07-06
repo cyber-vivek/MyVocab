@@ -56,7 +56,7 @@ export const ResultsPage = () => {
                   </Stack>
 
                   <Box className={styles.optionsContainer}>
-                    <QuestionOption question={q} selectedIndex={selectedAnswers[index]} />
+                    <QuestionOption question={q} selectedIndex={selectedAnswers[index]} isResultPage={true} />
                   </Box>
                 </ListItem>
               </Paper>

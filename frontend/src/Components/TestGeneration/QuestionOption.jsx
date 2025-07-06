@@ -2,12 +2,15 @@ import React from 'react';
 import { FormControlLabel, Typography, Radio } from '@mui/material';
 import styles from '../../Styles/questionRender.module.css';
 
-export const QuestionOption = ({ question, selectedIndex, handleOptionSelect = () => { } }) => {
+export const QuestionOption = ({ question, selectedIndex, handleOptionSelect = () => { }, isResultPage = false }) => {
     return question.options.map((option, idx) => {
         const isCorrect = idx === question.correctIndex;
         let classList = styles.option;
         if (selectedIndex !== null && selectedIndex === idx) {
             classList = (isCorrect) ? styles.correct : styles.wrong;
+        }
+        if (isResultPage && isCorrect) {
+            classList = styles.correct;
         }
         return (
             <FormControlLabel
