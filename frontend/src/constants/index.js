@@ -29,3 +29,9 @@ export const INITIAL_ADD_WORD_FORM_DATA = {
 }
 
 export const SEARCH_DEBOUNCE_TIME = 700;
+
+export const TEST_QUESTION_NUMBERS = [
+  {value: 2, label: '2 Questions'},
+  {value: 5, label: '5 Questions'},
+  {value: 10, label: '10 Questions'},
+]

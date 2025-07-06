@@ -1,0 +1,21 @@
+.option {
+  color: inherit;
+  margin-top: 5px;
+}
+
+.correct {
+  color: green;
+  font-weight: bold;
+}
+
+.wrong {
+  color: red;
+}
+
+.button {
+  margin-top: 8px;
+}
+
+.feedback {
+  margin-top: 16px;
+}

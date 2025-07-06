@@ -1,20 +1,21 @@
 const { generateMCQ } = require("../helpers/commonHelper");
 const { errorHandler } = require("../helpers/requestHandler");
+const AppError = require("../utils/AppError");
 
 const generateTest = async (req, res, next) => {
   try {
-    const questions = 2;
-    const generatedQuestions = [];
-    for (let i = 0; i < questions; i++) {
-      const question = await generateMCQ();
-      generatedQuestions.push(question);
+    const userId = req.user.id;
+    const questionsCount = +req.body.questionsCount || 10;
+    if(questionsCount > 10) {
+      throw new AppError("You can only generate a test with a maximum of 10 questions.", 403);
     }
+    const questionsBank = await generateMCQ(userId, questionsCount);
     return res.json({
       message: "Test Generated Successfully!",
-      data: generatedQuestions,
+      data: questionsBank,
     });
   } catch (err) {
-    const { status, message, error } = err.message;
+    const { status, message, error } = err;
     return errorHandler(res, error, status, message);
   }
 };
