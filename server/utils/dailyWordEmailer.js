@@ -1,25 +1,11 @@
+const userModel = require('../models/userModel');
 const wordModel = require('../models/wordModel');
 const { DAYS_OF_WEEK } = require('./constants');
 const { send_mail } = require('./emailsender');
 sendDailyEmailToEachUser = async (req, res, next) => {
   try {
-    const users = await wordModel.aggregate([
-      {
-        $group: {
-          _id: '$user',
-        }
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "_id",
-          foreignField: "_id",
-          as: "userInfo",
-        },
-      },
-    ]);
-    let userDetails = users.map((user) => user.userInfo[0]);
-    userDetails = userDetails.map((user) => ({ name: user.name, email: user.email, _id: user._id }));
+    const users = await userModel.find({sendEmail: true});
+    const userDetails = users.map((user) => ({ name: user.name, email: user.email, _id: user._id }));
     for (let user of userDetails) {
       const revisionWord = await wordModel.find({ user: user._id }).sort({ lastVisited: 1 }).limit(1).lean();
       const { name = '', meaning = '' } = getWordMeaning(revisionWord[0]);
@@ -28,8 +14,10 @@ sendDailyEmailToEachUser = async (req, res, next) => {
       const mailBody = generateDailyWordHtml(user, name, meaning, lastRevsionDate);
       await send_mail(user.email, mailSubject, mailBody);
     }
-  } catch (err) { }
-  if(res) return res.json({message: 'success'});
+    return res.json({message: 'successfully sent email'});
+  } catch (err) {
+    return res.json({message:'failed', error: err});
+   }
 }
 
 const getWordMeaning = (word) => {

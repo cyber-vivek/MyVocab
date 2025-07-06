@@ -13,9 +13,7 @@ const send_mail = async (recipient, subject, htmlContent) => {
     subject: subject,
     html: htmlContent,
   };
-  try{
-    await transporter.sendMail(mailOptions);
-  } catch (e) {}
+  await transporter.sendMail(mailOptions);
 }
 
 module.exports = {

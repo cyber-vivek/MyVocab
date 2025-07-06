@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         min: 50,
     },
+    sendEmail: {
+        type: Boolean,
+        required: false,
+        default: false,
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);
